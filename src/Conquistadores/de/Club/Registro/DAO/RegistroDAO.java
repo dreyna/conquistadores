@@ -80,13 +80,10 @@ public class RegistroDAO implements RegistroInterface {
     @Override
     public boolean modificarRegistro(Registro r) {
          boolean op=false;
-         sql="";
-         
-         
-         
-         
-        sql="UPDATE producto SET nom_producto = '"+p.getNomprod()+"',"+
-        "precio = "+p.getPrecio()+",cantidad = " +p.getCant()+" WHERE idproducto="+p.getIdp();
+         sql="UPDATE  Registro SET  Nombre = '"+r.getNombre() +"','"+
+             "Apellido = "+r.getApellido()+ "','"+"DNI="+r.getDni()+"','"+ "Edad=" + r.getEdad()+"','"+ "Clase =" +r.getClase()+"','"+
+             "Unidad = " +r.getUnidad()+"','"+ "Correo Electronico =" +r.getCorreo()+"','"+"Telefono=" +r.getTelefono()+
+             "Observacion ="+r.getDetalle()+"' WHERE idregistro` ="+r.getIdr();
         try{
           cx = Conexion.getConexion();
           st = cx.createStatement();
@@ -102,13 +99,50 @@ public class RegistroDAO implements RegistroInterface {
     }
 
     @Override
-    public boolean eliminarRegistro(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean eliminarRegistro(int idr) {
+        boolean op=false;
+        
+        sql="DELETE FROM producto WHERE idregistro = "+idr;
+        try{
+          cx = Conexion.getConexion();
+          st = cx.createStatement();
+          int w = st.executeUpdate(sql);
+          if(w>0){
+              op = true;
+          } 
+          } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        return op;
     }
 
     @Override
     public List<Registro> listarProducto() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<Registro> lista = new ArrayList<>();
+        sql="SELECT *FROM Registro";
+        try {
+            cx= Conexion.getConexion();
+            st= cx.createStatement();
+            rs= st.executeQuery(sql);
+            while(rs.next()){
+                Registro r = new Registro();
+                r.setIdr(rs.getInt("idregistro"));
+                r.setNombre(rs.getString("Nombre"));
+                r.setApellido(rs.getString("Apellido"));
+                r.setDni(rs.getInt("DNI"));
+                r.setEdad(rs.getInt("Edad"));
+                r.setClase(rs.getString("Clse"));
+                r.setUnidad(rs.getString("Unidad"));
+                r.setCorreo(rs.getString("Correo Electronico"));
+                r.setTelefono(rs.getInt(" Telefono"));
+                r.setDetalle(rs.getString("Observacion"));
+                lista.add(r);
+            }
+        }catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        return lista;
+    }
     }
     
-}
+

@@ -34,6 +34,7 @@ public class PrincipalForm extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
+        escritorio = new javax.swing.JMenuItem();
 
         jMenuItem1.setText("jMenuItem1");
 
@@ -56,6 +57,15 @@ public class PrincipalForm extends javax.swing.JFrame {
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Edit");
+
+        escritorio.setText("jMenuItem3");
+        escritorio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                escritorioActionPerformed(evt);
+            }
+        });
+        jMenu2.add(escritorio);
+
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
@@ -73,6 +83,13 @@ public class PrincipalForm extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void escritorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_escritorioActionPerformed
+        // TODO add your handling code here:
+        RegistroForm tf= new RegistroForm();
+        escritorio.add(tf);
+        tf.setVisible(true);
+    }//GEN-LAST:event_escritorioActionPerformed
 
     /**
      * @param args the command line arguments
@@ -110,6 +127,7 @@ public class PrincipalForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem escritorio;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;

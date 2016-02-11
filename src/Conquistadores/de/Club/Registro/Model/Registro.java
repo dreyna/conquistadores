@@ -24,8 +24,7 @@ public class Registro {
     public Registro() {
     }
 
-    public Registro(int idr, String nombre, String apellido, int dni, int edad, String clase, String unidad, String correo, int telefono, String detalle) {
-        this.idr = idr;
+    public Registro(String nombre, String apellido, int dni, int edad, String clase, String unidad, String correo, int telefono, String detalle) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.dni = dni;

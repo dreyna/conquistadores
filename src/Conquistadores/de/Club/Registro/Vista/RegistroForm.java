@@ -146,6 +146,11 @@ public class RegistroForm extends javax.swing.JInternalFrame {
                 "N°", "ID", "Nombre", "Apellido", "DNI", "Edad", "Clase", "Unidad", "Correo Elextronico", "Telefono", "Observación"
             }
         ));
+        tbDatos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbDatosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbDatos);
         if (tbDatos.getColumnModel().getColumnCount() > 0) {
             tbDatos.getColumnModel().getColumn(0).setMaxWidth(50);
@@ -192,8 +197,18 @@ public class RegistroForm extends javax.swing.JInternalFrame {
         });
 
         btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Conquistadores/de/Club/Registro/Imagenes/1454100640_Pencil.png"))); // NOI18N
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Conquistadores/de/Club/Registro/Imagenes/1454100651_Delete.png"))); // NOI18N
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
 
         btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Conquistadores/de/Club/Registro/Imagenes/1454100635_Add.png"))); // NOI18N
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
@@ -348,27 +363,28 @@ public class RegistroForm extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtCorreoActionPerformed
 
     private void txtDNIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDNIActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_txtDNIActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         // TODO add your handling code here:
+        this.hide();
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         // TODO add your handling code here
          String nombre = txtNombre.getText();
-         String Apellido = txtApellido.getText();
-         String Correo = txtCorreo.getText();
-         int Telefono = Integer.parseInt(txtTelefono.getText());
+         String apellido = txtApellido.getText();
+         String correo = txtCorreo.getText();
+         int telefono = Integer.parseInt(txtTelefono.getText());
          int dni = Integer.parseInt(txtDNI.getText());
-         int Edad = Integer.parseInt(txtEdad.getText());
+         int edad = Integer.parseInt(txtEdad.getText());
          String clase = txtClase.getText();
          String unidad = txtUnidad.getText();
          String detalle = txtDetalle.getText();
-        Registro registro = new Registro(nombre, Apellido, Correo, Telefono, dni, Edad, clase, unidad, detalle);
+        Registro r = new Registro(nombre, apellido, dni, edad, clase, unidad, correo, telefono, detalle);
        
-        if(pi.registrarProducto(Registro)){
+        if(pi.registrarRegistro(r)){
              limpiar();
              ClearTable();
              listar();
@@ -378,7 +394,123 @@ public class RegistroForm extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        // TODO add your handling code here:
+        String nombre = txtNombre.getText();
+        String apellido = txtApellido.getText();
+        String correo = txtCorreo.getText();
+        int telefono = Integer.parseInt(txtTelefono.getText());
+        int dni = Integer.parseInt(txtDNI.getText());
+        int edad = Integer.parseInt(txtEdad.getText());
+        String clase = txtClase.getText();
+        String unidad = txtUnidad.getText();
+        String detalle = txtDetalle.getText();
+        
+        int id = Integer.parseInt(tbDatos.getValueAt(tbDatos.getSelectedRow(), 1).toString());
+         Registro r = new Registro(nombre, apellido, dni, edad, clase, unidad, correo, telefono, detalle);
+         r.setIdr(id);
+         
+         int op = JOptionPane.showOptionDialog(null,
+                 "Desea Modificar?",
+                 "Confirmacion",
+                 JOptionPane.YES_NO_OPTION,
+                 JOptionPane.QUESTION_MESSAGE,
+                 null, null, null);
+         if(pi.modificarRegistro(r)){
+             JOptionPane.showMessageDialog(null, "Modificado correctamente!!");
+             limpiar();
+             ClearTable();
+             listar();
+         }else{
+             JOptionPane.showMessageDialog(null, "No se ha modificado!!");
+         }
+    }//GEN-LAST:event_btnEditarActionPerformed
 
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        // TODO add your handling code here:
+        int x = tbDatos.getSelectedRow();
+        if(x>=0){
+            int id = Integer.parseInt(tbDatos.getValueAt(x, 1).toString());
+            int op = JOptionPane.showOptionDialog(null,
+                    "Desea Eliminar?",
+                    "Confirmacion",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null, null, null);
+            if (op == JOptionPane.YES_OPTION){
+            if (pi.eliminarRegistro(id)) {
+                JOptionPane.showMessageDialog(null, "Eliminado correctamente!!");
+                limpiar();
+                ClearTable();
+                listar();
+            } else {
+                JOptionPane.showMessageDialog(null, "No se ha modificado!!");
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "!!");
+        }
+        }
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void tbDatosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbDatosMouseClicked
+        // TODO add your handling code here:
+        int fila = tbDatos.getSelectedRow();
+        if(fila>=0){
+            txtNombre.setText(tbDatos.getValueAt(fila, 2).toString());
+            txtApellido.setText(tbDatos.getValueAt(fila, 3).toString());
+            txtDNI.setText(tbDatos.getValueAt(fila, 4).toString());
+            txtEdad.setText(tbDatos.getValueAt(fila, 5).toString());
+            txtClase.setText(tbDatos.getValueAt(fila, 6).toString());
+            txtUnidad.setText(tbDatos.getValueAt(fila, 7).toString());
+            txtCorreo.setText(tbDatos.getValueAt(fila, 8).toString());
+            txtTelefono.setText(tbDatos.getValueAt(fila, 9).toString());
+            txtDetalle.setText(tbDatos.getValueAt(fila, 10).toString());
+            
+            btnnuevo.setEnabled(false);
+            btnsalir.setEnabled(false);
+        }
+    }//GEN-LAST:event_tbDatosMouseClicked
+
+    public  void listar(){
+    model = (DefaultTableModel) tbDatos.getModel();
+    lista = pi.ListarRegistro();
+    Object datos[] = new Object[5];
+    for(int i=0; i<lista.size();i++){
+    datos[0]= i+1;
+    datos[1]=lista.get(i).getNombre();
+    datos[2]=lista.get(i).getApellido();
+    datos[3]=lista.get(i).getDni();
+    datos[4]=lista.get(i).getEdad();
+    datos[5]=lista.get(i).getClase();
+    datos[6]=lista.get(i).getUnidad(); 
+    datos[7]=lista.get(i).getCorreo();
+    datos[8]=lista.get(i).getTelefono();
+    datos[9]=lista.get(i).getDetalle();
+    
+    model.addRow(datos);
+    tbDatos.setModel(model); 
+}
+}
+public void limpiar(){
+        txtNombre.setText(null);
+        txtApellido.setText(null);
+        txtDNI.setText(null);
+        txtEdad.setText(null);
+        txtClase.setText(null);
+        txtUnidad.setText(null);
+        txtCorreo.setText(null);
+        txtTelefono.setText(null);
+        txtDetalle.setText(null);
+        
+        txtNombre.requestFocus();
+    }
+
+private void ClearTable(){
+    for (int i = 0;i < tbDatos.getRowCount(); i++) {
+        model.removeRow(i);
+        i-=1;
+    }
+}
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnEditar;
